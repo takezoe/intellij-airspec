@@ -1,0 +1,23 @@
+<idea-plugin>
+    <id>com.github.takezoe.airspec.intellij</id>
+    <name>AirSpec support</name>
+    <vendor>Naoki Takezoe</vendor>
+    <version>replaced-by-build</version>
+
+    <idea-version since-build="223" until-build="231.*"/>
+
+    <depends>org.intellij.scala</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- test support -->
+        <testFramework implementation="com.github.takezoe.airspec.intellij.AirSpecTestFramework" />
+        <configurationType implementation="com.github.takezoe.airspec.intellij.AirSpecTestConfigurationType"/>
+        <runConfigurationProducer implementation="com.github.takezoe.airspec.intellij.AirSpecTestRunConfigurationProducer"/>
+        <runLineMarkerContributor implementationClass="com.github.takezoe.airspec.intellij.AirSpecRunLineMarkerProvider"
+                                  language="Scala" order="first"/>
+    </extensions>
+
+</idea-plugin>
