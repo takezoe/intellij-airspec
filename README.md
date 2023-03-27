@@ -1,6 +1,8 @@
-# AirSpec support for IntelliJ
+# IntelliJ plugin for AirSpec
 
-IntelliJ plugin for [AirSpec](https://wvlet.org/airframe/docs/airspec)
+Run [AirSpec](https://wvlet.org/airframe/docs/airspec) test cases on IntelliJ
+
+![IntelliJ plugin for AirSpec](image.png)
 
 ## Build and Install
 
