@@ -3,6 +3,9 @@
     <name>AirSpec support</name>
     <vendor>Naoki Takezoe</vendor>
     <version>replaced-by-build</version>
+    <description><![CDATA[
+      Run <a href="https://wvlet.org/airframe/docs/airspec">AirSpec</a> test cases on IntelliJ
+      ]]></description>
 
     <idea-version since-build="223" until-build="231.*"/>
 

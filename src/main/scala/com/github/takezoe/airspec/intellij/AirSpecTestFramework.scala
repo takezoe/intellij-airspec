@@ -9,11 +9,13 @@ import org.jetbrains.plugins.scala.lang.psi.api.toplevel.typedef.{ScClass, ScTem
 import org.jetbrains.plugins.scala.lang.psi.impl.toplevel.typedef.ScClassImpl
 import org.jetbrains.plugins.scala.lang.psi.types.ScType
 import org.jetbrains.plugins.scala.testingSupport.test.AbstractTestFramework
-
 import AirSpecTestFramework._
+
+import javax.swing.Icon
 
 class AirSpecTestFramework extends AbstractTestFramework {
   override def getName: String              = "AirSpec"
+  override def getIcon(): Icon              = AirframeIcon
   override def baseSuitePaths: Seq[String]  = Seq("wvlet.airspec.AirSpec")
   override def getMarkerClassFQName: String = "wvlet.airspec.AirSpec"
   override def getDefaultSuperClass: String = "wvlet.airspec.AirSpec"

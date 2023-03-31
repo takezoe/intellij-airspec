@@ -1,6 +1,7 @@
 package com.github.takezoe.airspec
 
 import com.intellij.codeInsight.TestFrameworks
+import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.{PsiClass, PsiElement}
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.search.searches.ReferencesSearch
@@ -16,6 +17,8 @@ import org.jetbrains.plugins.scala.lang.psi.api.toplevel.typedef.ScTypeDefinitio
 import scala.jdk.CollectionConverters.CollectionHasAsScala
 
 package object intellij {
+
+  val AirframeIcon = IconLoader.getIcon("/icons/airframe.png", getClass)
 
   def parentTypeDefinition(e: PsiElement): Option[ScTypeDefinition] =
     parentOfType(e, classOf[ScTypeDefinition], strict = false)
