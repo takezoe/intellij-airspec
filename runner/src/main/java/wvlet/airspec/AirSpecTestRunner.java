@@ -7,12 +7,9 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 import scala.runtime.BoxedUnit;
-import wvlet.airspec.runner.AirSpecLogger;
 import wvlet.airspec.runner.AirSpecSbtRunner;
 import wvlet.airspec.runner.AirSpecTaskRunner;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import static wvlet.airspec.TestRunnerUtil.*;
@@ -23,7 +20,6 @@ public class AirSpecTestRunner {
         for (String arg: args) {
             System.out.println(arg);
         }
-        List<String> params = new ArrayList<>();
         String className = null;
         String testName = null;
         for (int i = 0; i < args.length; i++) {
@@ -48,11 +44,13 @@ public class AirSpecTestRunner {
             config = new AirSpecSbtRunner.AirSpecConfig(new String[]{testName});
         }
 
+        TestScopeManager testScopeManager = new TestScopeManager();
+
         AirSpecTaskRunner runner = new AirSpecTaskRunner(
                 taskDef,
                 config,
-                new AirSpecLogger(),
-                new AirSpecTestRunnerEventHandler(),
+                new AirSpecTestLogger(testScopeManager),
+                new AirSpecTestRunnerEventHandler(testScopeManager),
                 AirSpecTestRunner.class.getClassLoader()
         );
         reportMessage(String.format("##teamcity[testSuiteStarted name='%s' nodeId='1' parentNodeId='0']", escapeString(className)));
