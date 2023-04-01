@@ -6,18 +6,16 @@ import wvlet.airspec.runner.AirSpecEventHandler;
 
 import static wvlet.airspec.TestRunnerUtil.*;
 
-public class AirSpecTestRunnerEventHandler extends AirSpecEventHandler {
+public class AirSpecIntelliJEventHandler extends AirSpecEventHandler {
 
     private TestScopeManager testScopeManager;
 
-    public AirSpecTestRunnerEventHandler(TestScopeManager testScopeManager) {
+    public AirSpecIntelliJEventHandler(TestScopeManager testScopeManager) {
         this.testScopeManager = testScopeManager;
     }
 
     @Override
     public void handle(Event event) {
-        System.out.println(event);
-
         if (event.status() == Status.Pending || event.status() == Status.Ignored || event.status() == Status.Skipped || event.status() == Status.Canceled) {
             TestScopeManager.TestCase current = testScopeManager.getCurrent();
             if (!current.name.equals(event.fullyQualifiedName())) {

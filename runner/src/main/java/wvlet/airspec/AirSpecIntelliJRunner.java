@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
 
 import static wvlet.airspec.TestRunnerUtil.*;
 
-public class AirSpecTestRunner {
+public class AirSpecIntelliJRunner {
     public static void main(String[] args) {
         System.out.println("==== AirSpecRunner ====");
         for (String arg: args) {
@@ -49,9 +49,9 @@ public class AirSpecTestRunner {
         AirSpecTaskRunner runner = new AirSpecTaskRunner(
                 taskDef,
                 config,
-                new AirSpecTestLogger(testScopeManager),
-                new AirSpecTestRunnerEventHandler(testScopeManager),
-                AirSpecTestRunner.class.getClassLoader()
+                new AirSpecIntelliJLogger(testScopeManager),
+                new AirSpecIntelliJEventHandler(testScopeManager),
+                AirSpecIntelliJRunner.class.getClassLoader()
         );
         reportMessage(String.format("##teamcity[testSuiteStarted name='%s' nodeId='1' parentNodeId='0']", escapeString(className)));
         Future<BoxedUnit> f = runner.runTask();

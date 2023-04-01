@@ -4,7 +4,6 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestScopeManager {
-
     private AtomicInteger id = new AtomicInteger(0);
     private Stack<TestCase> stack = new Stack<>();
 

@@ -6,11 +6,11 @@ import wvlet.airspec.runner.AirSpecLogger;
 import static wvlet.airspec.TestRunnerUtil.escapeString;
 import static wvlet.airspec.TestRunnerUtil.reportMessage;
 
-public class AirSpecTestLogger extends AirSpecLogger {
+public class AirSpecIntelliJLogger extends AirSpecLogger {
 
     private TestScopeManager testScopeManager;
 
-    public AirSpecTestLogger(TestScopeManager testScopeManager) {
+    public AirSpecIntelliJLogger(TestScopeManager testScopeManager) {
         this.testScopeManager = testScopeManager;
     }
 

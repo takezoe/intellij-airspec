@@ -10,7 +10,7 @@ import org.jetbrains.plugins.scala.testingSupport.test.CustomTestRunnerBasedStat
 import org.jetbrains.plugins.scala.testingSupport.test.testdata.{ClassTestData, TestConfigurationData}
 import org.jetbrains.plugins.scala.testingSupport.test.{AbstractTestFramework, AbstractTestRunConfiguration, RunStateProvider, SuiteValidityChecker, SuiteValidityCheckerBase, TestKind}
 import org.jetbrains.plugins.scala.testingSupport.test._
-import wvlet.airspec.AirSpecTestRunner
+import wvlet.airspec.AirSpecIntelliJRunner
 
 class AirSpecTestRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     extends AbstractTestRunConfiguration(project, configurationFactory, name) {
@@ -27,7 +27,7 @@ class AirSpecTestRunConfiguration(project: Project, configurationFactory: Config
   override def runStateProvider: RunStateProvider =
     new CustomTestRunnerOrSbtShellStateProvider(
       this,
-      TestFrameworkRunnerInfo(classOf[AirSpecTestRunner]),
+      TestFrameworkRunnerInfo(classOf[AirSpecIntelliJRunner]),
       new AirSpecSbtTestRunningSupport
     )
 }
