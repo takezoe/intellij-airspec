@@ -6,17 +6,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.psi.PsiClass
 import com.intellij.testIntegration.TestFramework
+import org.jetbrains.plugins.scala.testingSupport.test.CustomTestRunnerBasedStateProvider.TestFrameworkRunnerInfo
 import org.jetbrains.plugins.scala.testingSupport.test.testdata.{ClassTestData, TestConfigurationData}
-import org.jetbrains.plugins.scala.testingSupport.test.{
-  AbstractTestFramework,
-  AbstractTestRunConfiguration,
-  RunStateProvider,
-  SuiteValidityChecker,
-  SuiteValidityCheckerBase,
-  TestKind
-}
-
+import org.jetbrains.plugins.scala.testingSupport.test.{AbstractTestFramework, AbstractTestRunConfiguration, RunStateProvider, SuiteValidityChecker, SuiteValidityCheckerBase, TestKind}
 import org.jetbrains.plugins.scala.testingSupport.test._
+import wvlet.airspec.AirSpecTestRunner
 
 class AirSpecTestRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     extends AbstractTestRunConfiguration(project, configurationFactory, name) {
@@ -31,7 +25,11 @@ class AirSpecTestRunConfiguration(project: Project, configurationFactory: Config
   override protected def validityChecker: SuiteValidityChecker = AirSpecTestRunConfiguration.validityChecker
 
   override def runStateProvider: RunStateProvider =
-    new SbtShellBasedStateProvider(this, new AirSpecSbtTestRunningSupport())
+    new CustomTestRunnerOrSbtShellStateProvider(
+      this,
+      TestFrameworkRunnerInfo(classOf[AirSpecTestRunner]),
+      new AirSpecSbtTestRunningSupport
+    )
 }
 
 object AirSpecTestRunConfiguration {

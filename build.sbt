@@ -64,7 +64,8 @@ lazy val runner: Project =
     .settings(
       (Compile / javacOptions) := outOfIDEAProcessJavacOptions,
       (Compile / scalacOptions) := outOfIDEAProcessScalacOptions,
-      packageMethod := PackagingMethod.Standalone(static = true)
+      packageMethod := PackagingMethod.Standalone(static = true),
+      libraryDependencies += "org.wvlet.airframe" %% "airspec" % "23.3.4" % "provided"
     )
 
 def newProject(projectName: String, base: File): Project =
