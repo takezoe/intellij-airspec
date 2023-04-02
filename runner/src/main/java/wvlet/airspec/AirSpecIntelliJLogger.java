@@ -21,14 +21,12 @@ public class AirSpecIntelliJLogger extends AirSpecLogger {
         int parentId = testScopeManager.getCurrent().id;
         int currentId = testScopeManager.beginScope(specName).id;
 
-        reportMessage(
-                String.format(
-                        "##teamcity[testStarted name='%s' nodeId='%d' parentNodeId='%d']",
-                        escapeString(specName),
-                        currentId,
-                        parentId
-                )
-        );
+        reportMessage(String.format(
+            "##teamcity[testStarted name='%s' nodeId='%d' parentNodeId='%d']",
+            escapeString(specName),
+            currentId,
+            parentId
+        ));
     }
 
     @Override
@@ -38,14 +36,12 @@ public class AirSpecIntelliJLogger extends AirSpecLogger {
         int parentId = testScopeManager.getCurrent().id;
         int currentId = testScopeManager.beginScope(testName).id;
 
-        reportMessage(
-                String.format(
-                        "##teamcity[testStarted name='%s' nodeId='%d' parentNodeId='%d']",
-                        escapeString(testName),
-                        currentId,
-                        parentId
-                )
-        );
+        reportMessage(String.format(
+            "##teamcity[testStarted name='%s' nodeId='%d' parentNodeId='%d']",
+            escapeString(testName),
+            currentId,
+            parentId
+        ));
     }
 
     @Override

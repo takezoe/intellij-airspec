@@ -35,9 +35,9 @@ public class TestRunnerUtil {
         return TIMESTAMP_FORMAT.format(date);
     }
 
-    public static String actualExpectedAttrs(String actual, String expected) {
-        return " expected='" + escapeString(expected) + "' actual='" + escapeString(actual) + "' ";
-    }
+//    public static String actualExpectedAttrs(String actual, String expected) {
+//        return " expected='" + escapeString(expected) + "' actual='" + escapeString(actual) + "' ";
+//    }
 
     public static String getStacktrace(Throwable t) {
         StringWriter out = new StringWriter();
