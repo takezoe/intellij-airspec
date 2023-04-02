@@ -2,7 +2,7 @@ import org.jetbrains.sbtidea.{AutoJbr, JbrPlatform}
 
 lazy val scala213           = "2.13.10"
 lazy val scalaPluginVersion = "2023.1.13"
-lazy val pluginVersion      = "2023.1.23.0"
+lazy val pluginVersion      = "2023.1.23.1"
 
 ThisBuild / intellijPluginName := "intellij-airspec"
 ThisBuild / intellijBuild := "223.8836.41"
