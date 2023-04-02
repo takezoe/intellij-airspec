@@ -1,22 +1,18 @@
 package com.github.takezoe.airspec.intellij
 
 import com.intellij.execution.actions.RunConfigurationProducer
-import com.intellij.execution.configurations.ConfigurationFactory
+import com.intellij.execution.configurations.{ConfigurationFactory, JavaParameters, RunProfileState}
+import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.InvalidDataException
 import com.intellij.psi.PsiClass
 import com.intellij.testIntegration.TestFramework
+import org.jetbrains.plugins.scala.testingSupport.test.CustomTestRunnerBasedStateProvider.TestFrameworkRunnerInfo
 import org.jetbrains.plugins.scala.testingSupport.test.testdata.{ClassTestData, TestConfigurationData}
-import org.jetbrains.plugins.scala.testingSupport.test.{
-  AbstractTestFramework,
-  AbstractTestRunConfiguration,
-  RunStateProvider,
-  SuiteValidityChecker,
-  SuiteValidityCheckerBase,
-  TestKind
-}
-
+import org.jetbrains.plugins.scala.testingSupport.test.{AbstractTestFramework, AbstractTestRunConfiguration, RunStateProvider, SuiteValidityChecker, SuiteValidityCheckerBase, TestKind}
 import org.jetbrains.plugins.scala.testingSupport.test._
+import org.jetbrains.plugins.scala.testingSupport.test.sbt.SbtTestRunningSupport
+import wvlet.airspec.AirSpecIntelliJRunner
 
 class AirSpecTestRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     extends AbstractTestRunConfiguration(project, configurationFactory, name) {
@@ -31,7 +27,49 @@ class AirSpecTestRunConfiguration(project: Project, configurationFactory: Config
   override protected def validityChecker: SuiteValidityChecker = AirSpecTestRunConfiguration.validityChecker
 
   override def runStateProvider: RunStateProvider =
-    new SbtShellBasedStateProvider(this, new AirSpecSbtTestRunningSupport())
+    // TODO add runner.jar to classpath automatically
+    new CustomTestRunnerOrSbtShellStateProvider(
+      this,
+      TestFrameworkRunnerInfo(classOf[AirSpecIntelliJRunner]),
+      new AirSpecSbtTestRunningSupport
+    )
+}
+
+final class CustomTestRunnerOrSbtShellStateProvider(
+  configuration: AbstractTestRunConfiguration,
+  runnerInfo: TestFrameworkRunnerInfo,
+  val sbtSupport: SbtTestRunningSupport
+) extends RunStateProvider {
+
+  override def commandLineState(
+    env: ExecutionEnvironment,
+    failedTests: Option[Seq[(String, String)]]
+  ): RunProfileState = {
+    val provider =
+      if (configuration.testConfigurationData.useSbt)
+        new SbtShellBasedStateProvider(configuration, sbtSupport)
+      else
+        new CustomTestRunnerBasedStateProvider(configuration, runnerInfo)
+    provider.commandLineState(env, failedTests)
+  }
+}
+
+final class CustomTestRunnerBasedStateProvider(
+  configuration: AbstractTestRunConfiguration,
+  runnerInfo: TestFrameworkRunnerInfo
+) extends RunStateProvider {
+
+  override def commandLineState(
+    env: ExecutionEnvironment,
+    failedTests: Option[Seq[(String, String)]]
+  ): RunProfileState =
+    new ScalaTestFrameworkCommandLineState(configuration, env, failedTests, runnerInfo) {
+      override def getJavaParameters: JavaParameters = {
+        val params = super.getJavaParameters
+        params.getClassPath.add(runnersJar)
+        params
+      }
+    }
 }
 
 object AirSpecTestRunConfiguration {

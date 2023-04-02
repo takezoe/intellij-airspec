@@ -7,6 +7,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testIntegration.TestFramework
+import com.intellij.util.PathUtil
 import org.jetbrains.plugins.scala.extensions.PsiElementExt
 import org.jetbrains.plugins.scala.lang.lexer.ScalaTokenTypes
 import org.jetbrains.plugins.scala.lang.psi.api.base.{ScLiteral, ScReference}
@@ -14,11 +15,20 @@ import org.jetbrains.plugins.scala.lang.psi.api.expr.{ScMethodCall, ScReferenceE
 import org.jetbrains.plugins.scala.lang.psi.api.statements.{ScFunctionDefinition, ScPatternDefinition}
 import org.jetbrains.plugins.scala.lang.psi.api.toplevel.typedef.ScTypeDefinition
 
+import java.io.File
 import scala.jdk.CollectionConverters.CollectionHasAsScala
 
 package object intellij {
 
   val AirframeIcon = IconLoader.getIcon("/icons/airframe.png", getClass)
+
+  private val runnersJarName = "runners.jar"
+  private val libRoot: File = {
+    val jarPath = new File(PathUtil.getJarPathForClass(this.getClass)) // scalaCommunity.jar
+    jarPath.getParentFile
+  }
+
+  val runnersJar = new File(libRoot, runnersJarName)
 
   def parentTypeDefinition(e: PsiElement): Option[ScTypeDefinition] =
     parentOfType(e, classOf[ScTypeDefinition], strict = false)
