@@ -16,10 +16,10 @@ import static wvlet.airspec.TestRunnerUtil.*;
 
 public class AirSpecIntelliJRunner {
     public static void main(String[] args) {
-        System.out.println("==== AirSpecRunner ====");
-        for (String arg: args) {
-            System.out.println(arg);
-        }
+//        System.out.println("==== AirSpecRunner ====");
+//        for (String arg: args) {
+//            System.out.println(arg);
+//        }
         String className = null;
         String testName = null;
         for (int i = 0; i < args.length; i++) {

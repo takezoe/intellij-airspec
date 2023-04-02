@@ -51,6 +51,5 @@ public class AirSpecIntelliJLogger extends AirSpecLogger {
     @Override
     public void logEvent(AirSpecEvent e, int indentLevel, boolean showTestName) {
         super.logEvent(e, indentLevel, showTestName);
-        System.out.println("** logEvent: " + e);
     }
 }
