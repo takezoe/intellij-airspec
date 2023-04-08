@@ -24,15 +24,29 @@ class AirSpecTestRunConfiguration(project: Project, configurationFactory: Config
 
   override protected def validityChecker: SuiteValidityChecker = AirSpecTestRunConfiguration.validityChecker
 
-  override def runStateProvider: RunStateProvider =
-    new CustomTestRunnerOrSbtShellStateProvider(
-      this,
-      TestFrameworkRunnerInfo(classOf[AirSpecIntelliJRunner]),
-      new AirSpecSbtTestRunningSupport
-    )
+  override def runStateProvider: RunStateProvider = {
+    new RuntimeException().getStackTrace().tail.headOption match {
+      case Some(caller) if isForUIComponentsVisibility(caller) =>
+        new CustomTestRunnerOrSbtShellStateProvider(
+          this,
+          TestFrameworkRunnerInfo(classOf[AirSpecIntelliJRunner]),
+          new AirSpecSbtTestRunningSupport()
+        )
+      case _ =>
+        new AirSpecStateProvider(
+          this,
+          TestFrameworkRunnerInfo(classOf[AirSpecIntelliJRunner]),
+          new AirSpecSbtTestRunningSupport()
+        )
+    }
+  }
+
+  private def isForUIComponentsVisibility(caller: StackTraceElement): Boolean = {
+    caller.getClassName == "org.jetbrains.plugins.scala.testingSupport.test.ui.TestRunConfigurationForm$UiComponentsVisibility$" && caller.getMethodName == "update"
+  }
 }
 
-final class CustomTestRunnerOrSbtShellStateProvider(
+final class AirSpecStateProvider(
   configuration: AbstractTestRunConfiguration,
   runnerInfo: TestFrameworkRunnerInfo,
   val sbtSupport: SbtTestRunningSupport
@@ -46,12 +60,12 @@ final class CustomTestRunnerOrSbtShellStateProvider(
       if (configuration.testConfigurationData.useSbt)
         new SbtShellBasedStateProvider(configuration, sbtSupport)
       else
-        new CustomTestRunnerBasedStateProvider(configuration, runnerInfo)
+        new AirSpecTestRunnerBasedStateProvider(configuration, runnerInfo)
     provider.commandLineState(env, failedTests)
   }
 }
 
-final class CustomTestRunnerBasedStateProvider(
+final class AirSpecTestRunnerBasedStateProvider(
   configuration: AbstractTestRunConfiguration,
   runnerInfo: TestFrameworkRunnerInfo
 ) extends RunStateProvider {
