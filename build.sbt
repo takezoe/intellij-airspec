@@ -1,14 +1,20 @@
 import org.jetbrains.sbtidea.{AutoJbr, JbrPlatform}
 
-lazy val scala213           = "2.13.10"
-lazy val scalaPluginVersion = "2023.1.13"
-lazy val pluginVersion      = "2023.1.23.2"
+lazy val scala213           = "2.13.16"
+lazy val scalaPluginVersion = "2024.1.25"
+lazy val pluginVersion      = "2025.6.8.1"
 
 ThisBuild / intellijPluginName := "intellij-airspec"
-ThisBuild / intellijBuild := "223.8836.41"
+ThisBuild / intellijBuild := "243.22562.218"
 ThisBuild / jbrInfo := AutoJbr(explicitPlatform = Some(JbrPlatform.osx_aarch64))
 
 Global / intellijAttachSources := true
+
+// https://github.com/JetBrains/sbt-idea-plugin/issues/137
+buildIntellijOptionsIndex := {
+  // for some reason the project is unable to build an index
+  streams.value.log.info("Skipping buildIntellijOptionsIndex.")
+}
 
 lazy val globalJavacOptionsCommon = Seq(
   "-Xlint:unchecked"

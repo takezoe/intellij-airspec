@@ -2,18 +2,21 @@ package com.github.takezoe.airspec
 
 import com.intellij.codeInsight.TestFrameworks
 import com.intellij.openapi.util.IconLoader
-import com.intellij.psi.{PsiClass, PsiElement}
+import com.intellij.psi.{PsiAnnotation, PsiClass, PsiElement}
 import com.intellij.psi.impl.source.tree.LeafPsiElement
 import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testIntegration.TestFramework
 import com.intellij.util.PathUtil
-import org.jetbrains.plugins.scala.extensions.PsiElementExt
+import org.jetbrains.plugins.scala.codeInspection.collections._
+import org.jetbrains.plugins.scala.extensions.{PsiClassExt, PsiElementExt}
 import org.jetbrains.plugins.scala.lang.lexer.ScalaTokenTypes
 import org.jetbrains.plugins.scala.lang.psi.api.base.{ScLiteral, ScReference}
 import org.jetbrains.plugins.scala.lang.psi.api.expr.{ScMethodCall, ScReferenceExpression}
 import org.jetbrains.plugins.scala.lang.psi.api.statements.{ScFunctionDefinition, ScPatternDefinition}
 import org.jetbrains.plugins.scala.lang.psi.api.toplevel.typedef.ScTypeDefinition
+import org.jetbrains.plugins.scala.lang.psi.types.ScType
+import org.jetbrains.plugins.scala.lang.refactoring.util.ScalaNamesUtil
 
 import java.io.File
 import scala.jdk.CollectionConverters.CollectionHasAsScala
@@ -106,4 +109,18 @@ package object intellij {
       parentOfType(elem, classOf[ScFunctionDefinition])
         .map(findAllReferences)
   }
+
+  def isOfClassFrom(`type`: ScType, patterns: Seq[String]): Boolean = {
+    val typeExtracted = `type`.tryExtractDesignatorSingleton
+    isOfClassFromForExtractedType(typeExtracted, patterns)
+  }
+
+  private def isOfClassFromForExtractedType(typeExtracted: ScType, patterns: Seq[String]): Boolean = {
+    val clazz = typeExtracted.extractClass
+    clazz.exists(qualifiedNameFitToPatterns(_, patterns))
+  }
+
+  private def qualifiedNameFitToPatterns(clazz: PsiClass, patterns: Seq[String]) =
+    Option(clazz).flatMap(c => Option(c.qualifiedName))
+      .exists(ScalaNamesUtil.nameFitToPatterns(_, patterns, strict = false))
 }

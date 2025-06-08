@@ -7,7 +7,7 @@
       Run <a href="https://wvlet.org/airframe/docs/airspec">AirSpec</a> test cases on IntelliJ
       ]]></description>
 
-    <idea-version since-build="223" until-build="231.*"/>
+    <idea-version since-build="223" until-build="243.*"/>
 
     <depends>org.intellij.scala</depends>
     <depends>com.intellij.modules.java</depends>
