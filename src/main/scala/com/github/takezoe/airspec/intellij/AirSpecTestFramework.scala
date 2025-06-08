@@ -1,7 +1,6 @@
 package com.github.takezoe.airspec.intellij
 
 import com.intellij.psi.PsiElement
-import org.jetbrains.plugins.scala.codeInspection.collections.isOfClassFrom
 import org.jetbrains.plugins.scala.extensions.{ObjectExt, ResolvesTo}
 import org.jetbrains.plugins.scala.lang.psi.api.expr.ScReferenceExpression
 import org.jetbrains.plugins.scala.lang.psi.api.statements.ScFunctionDefinition
