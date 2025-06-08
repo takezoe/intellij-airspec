@@ -10,6 +10,12 @@ ThisBuild / jbrInfo := AutoJbr(explicitPlatform = Some(JbrPlatform.osx_aarch64))
 
 Global / intellijAttachSources := true
 
+// https://github.com/JetBrains/sbt-idea-plugin/issues/137
+buildIntellijOptionsIndex := {
+  // for some reason the project is unable to build an index
+  streams.value.log.info("Skipping buildIntellijOptionsIndex.")
+}
+
 lazy val globalJavacOptionsCommon = Seq(
   "-Xlint:unchecked"
 )
